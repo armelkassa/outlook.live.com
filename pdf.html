@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Affichage PDF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .pdf-container {
+            flex: 1;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .fallback {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+        }
+        
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .mobile-notice {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+        
+        /* Styles spécifiques mobile */
+        @media only screen and (max-width: 768px) {
+            .header {
+                padding: 10px 5px;
+                font-size: 0.8rem;
+            }
+            
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            
+            .mobile-notice {
+                display: block;
+            }
+            
+            .pdf-viewer {
+                min-height: calc(100vh - 120px);
+            }
+            
+            .fallback {
+                margin: 10px;
+                padding: 20px 15px;
+            }
+            
+            .fallback h2 {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+            
+            .fallback p {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+            
+            .download-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+                margin-top: 15px;
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+        
+        /* Pour les très petits écrans */
+        @media only screen and (max-width: 480px) {
+            .header h1 {
+                font-size: 1rem;
+            }
+            
+            .mobile-notice {
+                font-size: 0.8rem;
+                padding: 8px;
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Visualisation du document FAC.pdf</h1>
+        </div>
+        
+        <div class="mobile-notice">
+            📱 Sur mobile, vous pouvez zoomer et faire défiler le PDF. Si l'affichage pose problème, utilisez le bouton de téléchargement.
+        </div>
+        
+        <div class="pdf-container">
+            <iframe 
+                src="./img/FAC.pdf#view=FitH" 
+                class="pdf-viewer" 
+                type="application/pdf"
+                loading="lazy">
+                <div class="fallback">
+                    <h2>Impossible d'afficher le PDF</h2>
+                    <p>Votre navigateur ne prend pas en charge l'affichage des fichiers PDF.</p>
+                    <p>Veuillez télécharger le fichier pour le consulter.</p>
+                    <a href="./img/FAC.pdf" class="download-btn" download="FAC.pdf">📄 Télécharger le PDF</a>
+                </div>
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        // Détection mobile et ajustements
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
+        // Alternative pour mobiles si l'iframe ne fonctionne pas
+        if (isMobile()) {
+            const iframe = document.querySelector('.pdf-viewer');
+            
+            iframe.addEventListener('load', function() {
+                console.log('PDF chargé sur mobile');
+            });
+            
+            iframe.addEventListener('error', function() {
+                // Si l'iframe échoue sur mobile, proposer une alternative
+                const container = document.querySelector('.pdf-container');
+                container.innerHTML = `
+                    <div class="fallback">
+                        <h2>📱 Visualisation mobile</h2>
+                        <p>Pour une meilleure expérience sur mobile, téléchargez le PDF :</p>
+                        <a href="./img/FAC.pdf" class="download-btn" download="FAC.pdf">📄 Télécharger FAC.pdf</a>
+                        <br><br>
+                        <p style="font-size: 0.8rem; color: #666;">
+                            Ou <a href="./img/FAC.pdf" target="_blank" style="color: #007bff;">ouvrir dans un nouvel onglet</a>
+                        </p>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
